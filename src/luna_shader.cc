@@ -51,8 +51,10 @@ namespace luna::objs {
   }
 
   uint32_t Shader::getUniformLoc(const std::string &name) {
+    if (m_uniformCache.find(name) != m_uniformCache.end()) return m_uniformCache.at(name);
     int32_t location = glGetUniformLocation(m_id, name.c_str());
     if (location == -1) std::cout << "WARNING: uniform `" << name << "` does not exist" << std::endl;
+    m_uniformCache[name] = location;
     return location;
   }
 
