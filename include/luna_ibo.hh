@@ -11,6 +11,6 @@ namespace luna::objs {
     ~IBO(void);
     void bind(void) const;
     void unbind(void) const;
-    uint32_t getCount(void) const { return m_count; }
+    inline uint32_t getCount(void) const { return m_count; }
   };
 }

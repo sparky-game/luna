@@ -18,7 +18,7 @@ namespace luna::objs {
     VBOLayout(void);
     template <typename T>
     void push(uint32_t count);
-    const std::vector<VBOLayoutElement> &getElements(void) const { return m_elements; }
-    uint32_t getStride(void) const { return m_stride; }
+    inline const std::vector<VBOLayoutElement> &getElements(void) const { return m_elements; }
+    inline uint32_t getStride(void) const { return m_stride; }
   };
 }
