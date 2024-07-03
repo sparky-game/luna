@@ -11,7 +11,7 @@ extern "C" {
 namespace luna::objs {
   std::string Shader::read(const std::string &name) {
     std::ifstream ifs { "assets/shaders/" + name + ".glsl" };
-    if (!ifs) throw std::runtime_error{ "ERROR: `read_shader_from_file` failed (`" + name + ".glsl`)" };
+    if (!ifs) throw std::runtime_error { "ERROR: `read_shader_from_file` failed (`" + name + ".glsl`)" };
     std::stringstream ss;
     ss << ifs.rdbuf();
     return ss.str();
