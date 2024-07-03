@@ -1,6 +1,7 @@
 #pragma once
 
 #define GLEW_STATIC
+#define LUNA_VERSION "v0.1-alpha"
 
 #include "include/luna_vao.hh"
 #include "include/luna_vbo.hh"
