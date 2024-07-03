@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "Please cite this software using these metadata."
+type: software
+title: Luna
+authors:
+  - given-names: Wasym
+    family-names: Atieh Alonso
+contact:
+  - given-names: Wasym
+    family-names: Atieh Alonso
+    email: wasymatieh01@gmail.com
+abstract: "A multithreaded, high performance, OpenGL RaaL (Renderer as a Library) written in C++."
+license: BSD-3-Clause
+repository-code: "https://github.com/sparky-game/luna"
