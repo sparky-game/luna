@@ -8,5 +8,6 @@
 #include "include/luna_ibo.hh"
 #include "include/luna_debug.hh"
 #include "include/luna_shader.hh"
+#include "include/luna_texture.hh"
 #include "include/luna_renderer.hh"
 #include "include/luna_vbo_layout.hh"
