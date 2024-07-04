@@ -31,7 +31,7 @@ namespace luna::objs {
       const auto &element { elements[i] };
       GL_CHECK(glEnableVertexAttribArray(i));
       GL_CHECK(glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.getStride(), (const void *) (uintptr_t) offset));
-      offset += element.count * VBOLayoutElement::size(element.type);
+      offset += element.count * VBOLayoutElement::gl_size(element.type);
     }
   }
 }

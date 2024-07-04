@@ -8,7 +8,11 @@ namespace luna::objs {
     uint32_t type;
     uint32_t count;
     uint8_t normalized;
-    static std::size_t size(uint32_t type);
+    template <typename T>
+    static consteval uint32_t gl_type(void);
+    template <typename T>
+    static consteval uint8_t is_normalized(void);
+    static std::size_t gl_size(uint32_t type);
   };
 
   class VBOLayout {
