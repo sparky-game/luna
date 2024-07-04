@@ -83,4 +83,8 @@ namespace luna::objs {
   void Shader::setUniform4f(const std::string &name, float f0, float f1, float f2, float f3) {
     GL_CHECK(glUniform4f(getUniformLoc(name), f0, f1, f2, f3));
   }
+
+  void Shader::setUniform1m4(const std::string &name, const glm::mat4 &m) {
+    GL_CHECK(glUniformMatrix4fv(getUniformLoc(name), 1, GL_FALSE, &m[0][0]));
+  }
 }

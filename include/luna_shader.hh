@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cstdint>
+#include <glm/glm.hpp>
 #include <unordered_map>
 
 namespace luna::objs {
@@ -20,5 +21,6 @@ namespace luna::objs {
     void unbind(void) const;
     void setUniform1i(const std::string &name, int32_t i);
     void setUniform4f(const std::string &name, float f0, float f1, float f2, float f3);
+    void setUniform1m4(const std::string &name, const glm::mat4 &m);
   };
 }
