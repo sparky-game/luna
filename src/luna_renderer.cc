@@ -31,6 +31,8 @@ namespace luna {
     GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     std::cout << "*** BSD Luna (" << luna_version << ") ***" << std::endl;
     std::cout << "---------------------------------------" << std::endl;
+    std::cout << "GLFW version:   " << glfwGetVersionString() << std::endl;
+    std::cout << "GLEW version:   " << glewGetString(GLEW_VERSION) << std::endl;
     std::cout << "OpenGL version: " << GL_CHECK(glGetString(GL_VERSION)) << std::endl;
   }
 
