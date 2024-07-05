@@ -76,31 +76,14 @@ You should have received a copy of the BSD 3-Clause "New" or "Revised" License a
 
 * Build from source
 
-(...)
+First, ensure the source tree is absolutely clean. From /Sparky/ we recommend this command to be issued prior to each compilation; do not rely on the source tree being clean after cloning the repository or after un-tarring:
 
 #+begin_src sh
-mkdir build
+make mrproper
 #+end_src
 
-(...)
+To build Luna, issue the following command:
 
 #+begin_src sh
-CPPFLAGS="-I include -isystem vendor/stb -isystem vendor/glm"
-CXXFLAGS="-std=c++20 -Wall -Wextra -pedantic -Werror -pipe -O3"
+make
 #+end_src
-
-(...)
-
-#+begin_src sh
-for i in src/*.cc; do
-  clang++ $CPPFLAGS $CXXFLAGS -c $i -o "build/$(basename ${i%.cc}).o"
-done
-#+end_src
-
-(...)
-
-#+begin_src sh
-ar -rc libluna.a build/*.o
-#+end_src
-
-(...)
