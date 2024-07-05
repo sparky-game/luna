@@ -1,5 +1,6 @@
 #pragma once
 
+#include <imgui.h>
 #include "luna_vao.hh"
 #include "luna_ibo.hh"
 #include "luna_shader.hh"
@@ -16,7 +17,7 @@ namespace luna {
     Renderer(const std::string &name, uint32_t width, uint32_t height);
     ~Renderer(void);
     bool is_running(void) const;
-    void poll_events(void) const;
+    void prepare(void) const;
     void clear(void) const;
     void draw(const objs::VAO &vao, const objs::IBO &ibo, const objs::Shader &shader) const;
     void present(void) const;

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <luna_debug.hh>
 #include <luna_renderer.hh>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 extern "C" {
 #include <GL/glew.h>
@@ -29,14 +31,33 @@ namespace luna {
     }
     GL_CHECK(glEnable(GL_BLEND));
     GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io { ImGui::GetIO() };
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    ImGui::StyleColorsDark();
+    ImGuiStyle &style { ImGui::GetStyle() };
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+      style.WindowRounding = 0.0f;
+      style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
     std::cout << "*** BSD Luna (" << luna_version << ") ***" << std::endl;
     std::cout << "---------------------------------------" << std::endl;
+    std::cout << "ImGui version:  " << IMGUI_VERSION << " (" << IMGUI_VERSION_NUM << ")" << std::endl;
     std::cout << "GLFW version:   " << glfwGetVersionString() << std::endl;
     std::cout << "GLEW version:   " << glewGetString(GLEW_VERSION) << std::endl;
     std::cout << "OpenGL version: " << GL_CHECK(glGetString(GL_VERSION)) << std::endl;
   }
 
   Renderer::~Renderer(void) {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     glfwDestroyWindow(m_window);
     glfwTerminate();
   }
@@ -45,8 +66,11 @@ namespace luna {
     return not glfwWindowShouldClose(m_window);
   }
 
-  void Renderer::poll_events(void) const {
+  void Renderer::prepare(void) const {
     glfwPollEvents();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
   }
 
   void Renderer::clear(void) const {
@@ -58,6 +82,13 @@ namespace luna {
     vao.bind();
     ibo.bind();
     GL_CHECK(glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr));
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+      GLFWwindow *bak_curr_ctx = glfwGetCurrentContext();
+      ImGui::UpdatePlatformWindows();
+      ImGui::RenderPlatformWindowsDefault();
+      glfwMakeContextCurrent(bak_curr_ctx);
+    }
   }
 
   void Renderer::present(void) const {
