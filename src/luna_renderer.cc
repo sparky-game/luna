@@ -10,6 +10,7 @@ extern "C" {
 }
 
 static constexpr auto luna_version { "v0.1-alpha" };
+static constexpr auto glsl_version { "#version 330" };
 
 namespace luna {
   Renderer::Renderer(const std::string &name, uint32_t width, uint32_t height) : m_name{name}, m_width{width}, m_height{height}, m_window{nullptr} {
@@ -45,13 +46,15 @@ namespace luna {
       style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init(glsl_version);
     std::cout << "*** BSD Luna (" << luna_version << ") ***" << std::endl;
     std::cout << "---------------------------------------" << std::endl;
-    std::cout << "ImGui version:  " << IMGUI_VERSION << " (" << IMGUI_VERSION_NUM << ")" << std::endl;
-    std::cout << "GLFW version:   " << glfwGetVersionString() << std::endl;
-    std::cout << "GLEW version:   " << glewGetString(GLEW_VERSION) << std::endl;
-    std::cout << "OpenGL version: " << GL_CHECK(glGetString(GL_VERSION)) << std::endl;
+    std::cout << "ImGui version:   " << IMGUI_VERSION << " (" << IMGUI_VERSION_NUM << ")" << std::endl;
+    std::cout << "GLFW version:    " << glfwGetVersionString() << std::endl;
+    std::cout << "GLEW version:    " << glewGetString(GLEW_VERSION) << std::endl;
+    std::cout << "OpenGL vendor:   " << GL_CHECK(glGetString(GL_VENDOR)) << std::endl;
+    std::cout << "OpenGL renderer: " << GL_CHECK(glGetString(GL_RENDERER)) << std::endl;
+    std::cout << "OpenGL version:  " << GL_CHECK(glGetString(GL_VERSION)) << std::endl;
   }
 
   Renderer::~Renderer(void) {
