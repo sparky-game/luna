@@ -80,7 +80,7 @@ namespace luna {
     GL_CHECK(glClear(GL_COLOR_BUFFER_BIT));
   }
 
-  void Renderer::draw(const objs::VAO &vao, const objs::IBO &ibo, const objs::Shader &shader) const {
+  void Renderer::draw(const objs::VAO &vao, const objs::IBO &ibo, objs::Shader &shader) const {
     shader.bind();
     vao.bind();
     ibo.bind();

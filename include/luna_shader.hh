@@ -10,6 +10,7 @@ namespace luna::objs {
     uint32_t m_id;
     std::string m_name;
     std::unordered_map<std::string, int32_t> m_uniformCache;
+    bool m_isBound;
     std::string read(const std::string &name);
     uint32_t compile(uint32_t type, const std::string &src);
     uint32_t build(const std::string &vs_src, const std::string &fs_src);
@@ -17,8 +18,8 @@ namespace luna::objs {
   public:
     Shader(const std::string &name);
     ~Shader(void);
-    void bind(void) const;
-    void unbind(void) const;
+    void bind(void);
+    void unbind(void);
     void uniform(const std::string &name, int32_t i);
     void uniform(const std::string &name, float f0, float f1, float f2, float f3);
     void uniform(const std::string &name, const glm::mat4 &m);

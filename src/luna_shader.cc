@@ -68,12 +68,16 @@ namespace luna::objs {
     GL_CHECK(glDeleteProgram(m_id));
   }
 
-  void Shader::bind(void) const {
+  void Shader::bind(void) {
+    if (m_isBound) return;
     GL_CHECK(glUseProgram(m_id));
+    m_isBound = true;
   }
 
-  void Shader::unbind(void) const {
+  void Shader::unbind(void) {
+    if (not m_isBound) return;
     GL_CHECK(glUseProgram(0));
+    m_isBound = false;
   }
 
   void Shader::uniform(const std::string &name, int32_t i) {

@@ -19,7 +19,7 @@ namespace luna {
     bool is_running(void) const;
     void prepare(void) const;
     void clear(void) const;
-    void draw(const objs::VAO &vao, const objs::IBO &ibo, const objs::Shader &shader) const;
+    void draw(const objs::VAO &vao, const objs::IBO &ibo, objs::Shader &shader) const;
     void present(void) const;
   };
 }
