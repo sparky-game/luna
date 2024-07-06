@@ -10,7 +10,6 @@ namespace luna::objs {
     uint32_t m_id;
     std::string m_name;
     std::unordered_map<std::string, int32_t> m_uniformCache;
-    bool m_isBound;
     std::string read(const std::string &name);
     uint32_t compile(uint32_t type, const std::string &src);
     uint32_t build(const std::string &vs_src, const std::string &fs_src);

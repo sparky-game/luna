@@ -12,9 +12,10 @@ namespace luna {
     std::string m_name;
     uint32_t m_width;
     uint32_t m_height;
+    bool m_debug;
     GLFWwindow *m_window;
   public:
-    Renderer(const std::string &name, uint32_t width, uint32_t height);
+    Renderer(const std::string &name, uint32_t width, uint32_t height, bool debug = false);
     ~Renderer(void);
     bool is_running(void) const;
     void prepare(void) const;

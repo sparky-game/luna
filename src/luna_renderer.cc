@@ -13,7 +13,9 @@ static constexpr auto luna_version { "v0.1-alpha" };
 static constexpr auto glsl_version { "#version 330" };
 
 namespace luna {
-  Renderer::Renderer(const std::string &name, uint32_t width, uint32_t height) : m_name{name}, m_width{width}, m_height{height}, m_window{nullptr} {
+  Renderer::Renderer(const std::string &name, uint32_t width, uint32_t height, bool debug)
+    : m_name{name}, m_width{width}, m_height{height}, m_debug{debug}, m_window{nullptr}
+  {
     if (not glfwInit()) throw std::runtime_error { "ERROR: `glfwInit` failed" };
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -34,17 +36,10 @@ namespace luna {
     GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io { ImGui::GetIO() };
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    if (m_debug) ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::StyleColorsDark();
-    ImGuiStyle &style { ImGui::GetStyle() };
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-      style.WindowRounding = 0.0f;
-      style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
     std::cout << "*** BSD Luna (" << luna_version << ") ***" << std::endl;
@@ -55,6 +50,9 @@ namespace luna {
     std::cout << "OpenGL vendor:   " << GL_CHECK(glGetString(GL_VENDOR)) << std::endl;
     std::cout << "OpenGL renderer: " << GL_CHECK(glGetString(GL_RENDERER)) << std::endl;
     std::cout << "OpenGL version:  " << GL_CHECK(glGetString(GL_VERSION)) << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
+    std::cout << "Running config:  " << (m_debug ? "DEBUG (Editor mode)" : "RELEASE (Runtime mode)") << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
   }
 
   Renderer::~Renderer(void) {
@@ -74,6 +72,19 @@ namespace luna {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    if (m_debug) {
+      ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+      if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS             &&
+          (glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ||
+           glfwGetKey(m_window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)) glfwSetWindowShouldClose(m_window, true);
+      if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+          if (ImGui::MenuItem("Exit (Ctrl+Q)")) glfwSetWindowShouldClose(m_window, true);
+          ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+      }
+    }
   }
 
   void Renderer::clear(void) const {
@@ -87,12 +98,6 @@ namespace luna {
     GL_CHECK(glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr));
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-      GLFWwindow *bak_curr_ctx = glfwGetCurrentContext();
-      ImGui::UpdatePlatformWindows();
-      ImGui::RenderPlatformWindowsDefault();
-      glfwMakeContextCurrent(bak_curr_ctx);
-    }
   }
 
   void Renderer::present(void) const {
