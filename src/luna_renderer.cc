@@ -85,6 +85,7 @@ namespace luna {
     vao.bind();
     ibo.bind();
     GL_CHECK(glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr));
+    ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       GLFWwindow *bak_curr_ctx = glfwGetCurrentContext();
